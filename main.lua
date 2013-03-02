@@ -42,17 +42,26 @@ system = {
 
 	entities = {},
 	destroyed = {},	
-	saves = {}, --one for each player, 
+	saves = {}, --one for each player 
 	
 	state = "PLAYING"
 
 } 
 
 --saves positions for all players
-function system:save()
+function system:save(time)
 
 	for i, v in ipairs(players) do
-
+		data = {
+			pos = {
+				x = 0,
+				y = 0		
+			}
+		}
+		data.pos.x = self.entities[v].pos.x
+		data.pos.y = self.entities[v].pos.y
+ 
+		self.saves[i] = data
 	end
 
 end
@@ -61,7 +70,10 @@ end
 function system:load()
 
 	for i, v in ipairs(saves) do
+		e = self.entities[i]
 
+		e.pos.x = v.pos.x
+		e.pos.y = v.pos.y
 	end
 
 end
@@ -111,11 +123,6 @@ love.update = function(dt)
 			v.pos.x =  v.pos.x + v.speed
 		end	
 	end
-
-end
-
-
-function update_player(pid)
 
 end
 
@@ -196,14 +203,15 @@ MAP = {
 }
 
 SPAWN_POINTS = {
+
 		{MAP.WIDTH * 0.1, MAP.HEIGHT * 0.1}, -- bottom left
 		{MAP.WIDTH - MAP.WIDTH * 0.1, MAP.HEIGHT * 0.1}, -- bottom right
 		{MAP.WIDTH * 0.1, MAP.HEIGHT - MAP.HEIGHT * 0.1}, -- top left
 		{MAP.WIDTH - MAP.WIDTH * 0.1, MAP.HEIGHT - MAP.HEIGHT * 0.1}, -- top right
-
 		{MAP.WIDTH / 2, MAP.HEIGHT - MAP.HEIGHT * 0.1}, --top centre
 		{MAP.WIDTH / 2, MAP.HEIGHT * 0.1}, --bottom centre
 		{MAP.WIDTH / 2, MAP.HEIGHT / 2} -- centre
+
 }
 
 spawns_used = {}
