@@ -4,58 +4,62 @@
 	Developed by Josh Douglass-Molloy
 ]]--
 
-MAP = {
-	WIDTH = 400,
-	HEIGHT = 400
-}
+love.load = function()
+	love.graphics.setBackgroundColor( unpack(COLOURS["BG_COLOUR"]) )
+	
+	for i, __ in ipairs(SPAWN_POINTS) do
+		spawns_used[i] = false
+	end
 
-commands = {
-	save = "SAVE",
-	load = "LOAD"
-}
+
+end
 
 --maps players to entities
 players = {}
 
-CONTROLS = {
+--transition table for game states
+game_states = {
 
-	PLAYER = {
-		{
-			UP = 'w',
-			LEFT = 'a',
-			DOWN = 's',
-			RIGHT = 'd',
-			SAVE = 'lshift',
-			LOAD = 'lctrl'
-		},
-
-		{
-			UP = 'up',
-			LEFT = 'left',
-			DOWN = 'down',
-			RIGHT = 'right',
-			SAVE = 'rshift',
-			LOAD = 'rctrl'
-
-		}
-	},
-	
-	PASS = " "
-
+	t = {	
+		"PLAYING" = "WAITING",
+		"WAITING" = "PLAYING",
+		"GAME_OVER" = "PLAYING"
+	}
 }
 
 system = {
 
 	entities = {},
 	destroyed = {},	
-	saves = {}
+	saves = {}, --one for each player, 
+	
+	state = "PLAYING"
 
 } 
+
+--saves positions for all players
+function system:save()
+
+	for i, v in ipairs(players) do
+
+	end
+
+end
+
+--loads positions for all players
+function system:load()
+
+	for i, v in ipairs(saves) do
+
+	end
+
+end
 
 function system:new_entity()
 
 	local entity = {
 		id = #self.entities + 1,
+		type = "",
 		pos = {
 			x = 0,
 			y = 0
@@ -64,9 +68,12 @@ function system:new_entity()
 		heading = {
 			x = 0,
 			y = 0
-		}
+		},
 
+		speed = 0,
+		spawn_point = 0
 	}
+
 	table.insert(self.entities, entity)
 
 end
@@ -76,22 +83,29 @@ function system:del_entity(e)
 	destroyed[e] = true
 end
 
-love.load = function()
-	love.graphics.setBackgroundColor(unpack(COLOURS["BG_COLOUR"]))
-
-
-end
 
 love.update = function(dt)
 
+	--player movement
+	for i, v in ipairs(players) do
+
+	end
+
 end
 
 
+function update_player(pid)
+
+end
 
 love.draw = function()
 
+	for i, v in ipairs(system.entities) do
 	
+	end
 end
+
+
 
 
 -- Lightweight Stack
@@ -114,18 +128,36 @@ function stack:pop()
 		table.remove(self.elements)
 	end
 
-	if res == nil then
-		print("ERROR")	
-	else
+	if res then
 		return res
 	end
 end
 
 
+CONTROLS = {
+
+	PLAYER = {
+		{
+			UP = 'w',
+			LEFT = 'a',
+			DOWN = 's',
+			RIGHT = 'd'
+		},
+		{
+			UP = 'up',
+			LEFT = 'left',
+			DOWN = 'down',
+			RIGHT = 'right'
+		}
+	},	
+	PASS = ' ',
+	SAVE = 'f5',
+	LOAD = 'f9'
+}
 
 COLOURS = {
 
-	BG_COLOUR = {255,255,255},
+	BG_COLOUR = {255, 255, 255},
 
 	PLAYER_COLOURS = {
 		
@@ -136,3 +168,20 @@ COLOURS = {
 
 	TARGET_COLOUR = {128, 0, 128}
 }
+
+MAP = {
+	WIDTH = 400,
+	HEIGHT = 400
+}
+
+SPAWN_POINTS = {
+		{MAP.WIDTH * 0.1, MAP.HEIGHT * 0.1}, -- bottom left
+		{MAP.WIDTH - MAP.WIDTH * 0.1, MAP.HEIGHT * 0.1}, -- bottom right
+		{MAP.WIDTH * 0.1, MAP.HEIGHT - MAP.HEIGHT * 0.1}, -- top left
+		{MAP.WIDTH - MAP.WIDTH * 0.1, MAP.HEIGHT - MAP.HEIGHT * 0.1}, -- top right
+		{MAP.WIDTH / 2, MAP.HEIGHT / 2,} -- centre
+		{MAP.WIDTH / 2, MAP.HEIGHT - MAP.HEIGHT * 0.1}, --top centre
+		{MAP.WIDTH / 2, MAP.HEIGHT * 0.1} --bottom centre
+}
+
+spawns_used = {}
