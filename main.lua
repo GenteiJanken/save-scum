@@ -11,6 +11,12 @@ love.load = function()
 		spawns_used[i] = false
 	end
 
+	--assign players
+	for i = 1, 2 do
+		currplayer = system:new_entity()
+
+	end
+	
 
 end
 
@@ -26,6 +32,11 @@ game_states = {
 		"GAME_OVER" = "PLAYING"
 	}
 }
+
+function game_states:switch(state)
+	return self.t[state]
+end
+
 
 system = {
 
@@ -88,7 +99,17 @@ love.update = function(dt)
 
 	--player movement
 	for i, v in ipairs(players) do
+		e = v
 
+		if love.keyboard.isDown(CONTROLS.PLAYER[i]["UP"]) then
+			v.pos.y =  v.pos.y + v.speed
+		elseif love.keyboard.isDown(CONTROLS.PLAYER[i]["LEFT"]) then
+			v.pos.x =  v.pos.x - v.speed
+		elseif love.keyboard.isDown(CONTROLS.PLAYER[i]["DOWN"]) then
+			v.pos.y =  v.pos.y - v.speed
+		elseif love.keyboard.isDown(CONTROLS.PLAYER[i]["RIGHT"]) then
+			v.pos.x =  v.pos.x + v.speed
+		end	
 	end
 
 end
@@ -179,9 +200,10 @@ SPAWN_POINTS = {
 		{MAP.WIDTH - MAP.WIDTH * 0.1, MAP.HEIGHT * 0.1}, -- bottom right
 		{MAP.WIDTH * 0.1, MAP.HEIGHT - MAP.HEIGHT * 0.1}, -- top left
 		{MAP.WIDTH - MAP.WIDTH * 0.1, MAP.HEIGHT - MAP.HEIGHT * 0.1}, -- top right
-		{MAP.WIDTH / 2, MAP.HEIGHT / 2,} -- centre
+
 		{MAP.WIDTH / 2, MAP.HEIGHT - MAP.HEIGHT * 0.1}, --top centre
-		{MAP.WIDTH / 2, MAP.HEIGHT * 0.1} --bottom centre
+		{MAP.WIDTH / 2, MAP.HEIGHT * 0.1}, --bottom centre
+		{MAP.WIDTH / 2, MAP.HEIGHT / 2} -- centre
 }
 
 spawns_used = {}

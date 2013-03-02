@@ -14,6 +14,7 @@ Controls
 	Load - F9
 
 Movement
+
 	P1
 		WASD
 	P2 
