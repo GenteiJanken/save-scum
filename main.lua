@@ -5,7 +5,7 @@
 ]]--
 
 love.load = function()
-	love.graphics.setBackgroundColor( unpack(COLOURS["BG_COLOUR"]) )
+	love.graphics.setBackgroundColor( unpack(COLOURS['BG_COLOUR']) )
 	
 	for i, __ in ipairs(SPAWN_POINTS) do
 		spawns_used[i] = false
@@ -27,9 +27,9 @@ players = {}
 game_states = {
 
 	t = {	
-		"PLAYING" = "WAITING",
-		"WAITING" = "PLAYING",
-		"GAME_OVER" = "PLAYING"
+		PLAYING = 'WAITING',
+		WAITING = 'PLAYING',
+		GAME_OVER = 'PLAYING'
 	}
 }
 
@@ -44,7 +44,7 @@ system = {
 	destroyed = {},	
 	saves = {}, --one for each player 
 	
-	state = "PLAYING"
+	state = 'PLAYING'
 
 } 
 
@@ -113,13 +113,13 @@ love.update = function(dt)
 	for i, v in ipairs(players) do
 		e = v
 
-		if love.keyboard.isDown(CONTROLS.PLAYER[i]["UP"]) then
+		if love.keyboard.isDown(CONTROLS.PLAYER[i].UP) then
 			v.pos.y =  v.pos.y + v.speed
-		elseif love.keyboard.isDown(CONTROLS.PLAYER[i]["LEFT"]) then
+		elseif love.keyboard.isDown(CONTROLS.PLAYER[i].LEFT) then
 			v.pos.x =  v.pos.x - v.speed
-		elseif love.keyboard.isDown(CONTROLS.PLAYER[i]["DOWN"]) then
+		elseif love.keyboard.isDown(CONTROLS.PLAYER[i].DOWN) then
 			v.pos.y =  v.pos.y - v.speed
-		elseif love.keyboard.isDown(CONTROLS.PLAYER[i]["RIGHT"]) then
+		elseif love.keyboard.isDown(CONTROLS.PLAYER[i].RIGHT) then
 			v.pos.x =  v.pos.x + v.speed
 		end	
 	end
