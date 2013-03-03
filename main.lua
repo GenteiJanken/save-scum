@@ -203,9 +203,12 @@ function love.update(dt)
 					vec = normalise(entity.pos.x - p.pos.x, entity.pos.y - p.pos.y)
 					entity.heading.x = entity.heading.x + vec[1]
 					entity.heading.y = entity.heading.y + vec[2]
-			
-
+				else
+					entity.heading.x = 0
+					entity.heading.y = 0
 				end
+				
+				
 			end
 			
 			if entity.heading.x ~= 0 and entity.heading.y ~= 0 then
